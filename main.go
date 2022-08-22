@@ -1,3 +1,15 @@
+/*
+Print the hash of a folder. You may ignore some files using flags.
+
+Usage:
+
+	go-dirhash hash [flags]
+
+Flags:
+
+	-x, --ignore strings           ignored glob paths
+	-h, --help                     help for hash
+*/
 package main
 
 import (
@@ -9,7 +21,7 @@ import (
 
 func init() {
 	log.SetFormatter(&log.TextFormatter{})
-	log.SetOutput(os.Stdout)
+	log.SetOutput(os.Stderr)
 	logLevel, ok := os.LookupEnv("LOG_LEVEL")
 	if !ok {
 		logLevel = "info"

@@ -8,7 +8,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func walkDir(pathToWalk string) []string {
+// walkDir walks a directory returning a list of all of its files
+func walkDir(pathToWalk string) ([]string, error) {
 	allFiles := []string{}
 	err := filepath.Walk(pathToWalk,
 		func(path string, info os.FileInfo, err error) error {
@@ -20,37 +21,40 @@ func walkDir(pathToWalk string) []string {
 			}
 			return nil
 		})
-	if err != nil {
-		log.Error(err)
-	}
-	return allFiles
+	return allFiles, err
 }
 
-func filesToExclude(path string, excludedPaths []string) []string {
-	excludeMatches := pathsToExclude(path, excludedPaths)
+// filesToIgnore returns the files to ignore from a parent path and a the list of glob patterns
+func filesToIgnore(path string, ingoredPaths []string) ([]string, error) {
+	ignoreMatches := pathsToIgnore(path, ingoredPaths)
 	files := []string{}
-	for i := 0; i < len(excludeMatches); i++ {
-		fileStat, err := os.Stat(excludeMatches[i])
+	for i := 0; i < len(ignoreMatches); i++ {
+		fileStat, err := os.Stat(ignoreMatches[i])
 		if err != nil {
 			continue
 		}
 		if fileStat.IsDir() {
-			files = append(files, walkDir(excludeMatches[i])...)
+			ignoredDirFiles, err := walkDir(ignoreMatches[i])
+			if err != nil {
+				return nil, err
+			}
+			files = append(files, ignoredDirFiles...)
 		} else {
-			files = append(files, excludeMatches[i])
+			files = append(files, ignoreMatches[i])
 		}
 	}
-	return files
+	return files, nil
 }
 
-func pathsToExclude(path string, excludedPaths []string) []string {
+// pathsToIgnore returns the paths to ignore from a parent path and a the list of glob patterns
+func pathsToIgnore(path string, ingoredPaths []string) []string {
 	allMatches := []string{}
-	for i := 0; i < len(excludedPaths); i++ {
-		pattern := excludedPaths[i]
+	for i := 0; i < len(ingoredPaths); i++ {
+		pattern := ingoredPaths[i]
 		pattern = filepath.Join(path, pattern)
 		matches, err := doublestar.Glob(pattern)
 		if err != nil {
-			log.Error(err)
+			log.Error("Unable to find Glob matches", err)
 		}
 		allMatches = append(allMatches, matches...)
 	}

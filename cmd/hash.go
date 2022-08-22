@@ -8,11 +8,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var excludePaths []string
+var ignoredPaths []string
 
 func init() {
 	rootCmd.AddCommand(hashCmd)
-	hashCmd.Flags().StringSliceVarP(&excludePaths, "excluded-paths", "x", nil, "excluded glob paths")
+	hashCmd.Flags().StringSliceVarP(&ignoredPaths, "ignore", "x", nil, "ignored glob paths")
 }
 
 var hashCmd = &cobra.Command{
@@ -23,7 +23,7 @@ var hashCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var directory = args[0]
 		log.Debug("directory: ", directory)
-		log.Debug("excluded-paths: ", excludePaths)
-		fmt.Println(lib.DirHash(directory, excludePaths))
+		log.Debug("ignore: ", ignoredPaths)
+		fmt.Println(lib.DirHash(directory, ignoredPaths))
 	},
 }
