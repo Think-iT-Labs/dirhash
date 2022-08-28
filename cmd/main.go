@@ -3,7 +3,7 @@ Print the hash of a folder. You may ignore some files using flags.
 
 Usage:
 
-	dirhash hash [flags]
+	dirhash sha256 [flags]
 
 Flags:
 

@@ -7,8 +7,8 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "dirhash",
-	Short: "A package for creating a hash of a folder.",
-	Long:  `A package for creating a hash of a folder.`,
+	Short: "A package for calculating a directory checksum.",
+	Long:  `A package for calculating a directory checksum.`,
 }
 
 func Execute() {
