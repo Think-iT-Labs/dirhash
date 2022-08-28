@@ -5,3 +5,8 @@ data "dirhash_sha256" "example" {
     "glob_pattern_2/*"
   ]
 }
+
+output "directory_sha256_checksum" {
+  description = "the Output SHA256 Checksum for the directory"
+  value       = data.dirhash_sha256.example.checksum
+}
