@@ -1,9 +1,9 @@
-package cmd
+package main
 
 import (
 	"fmt"
 
-	"github.com/Think-iT-Labs/go-dirhash/lib"
+	"github.com/Think-iT-Labs/dirhash/lib"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

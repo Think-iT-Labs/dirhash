@@ -1,4 +1,4 @@
-package cmd
+package main
 
 import (
 	log "github.com/sirupsen/logrus"
@@ -6,7 +6,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "go-dirhash",
+	Use:   "dirhash",
 	Short: "A package for creating a hash of a folder.",
 	Long:  `A package for creating a hash of a folder.`,
 }

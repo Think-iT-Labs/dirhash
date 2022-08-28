@@ -1,38 +1,44 @@
-/*
-Print the hash of a folder. You may ignore some files using flags.
-
-Usage:
-
-	go-dirhash hash [flags]
-
-Flags:
-
-	-x, --ignore strings           ignored glob paths
-	-h, --help                     help for hash
-*/
 package main
 
 import (
-	"os"
+	"flag"
 
-	"github.com/Think-iT-Labs/go-dirhash/cmd"
-	log "github.com/sirupsen/logrus"
+	"github.com/Think-iT-Labs/dirhash/internal/provider"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 )
 
-func init() {
-	log.SetFormatter(&log.TextFormatter{})
-	log.SetOutput(os.Stderr)
-	logLevel, ok := os.LookupEnv("LOG_LEVEL")
-	if !ok {
-		logLevel = "info"
-	}
-	lvl, err := log.ParseLevel(logLevel)
-	if err != nil {
-		log.Error("LOG_LEVEL environment variable should be one of:", log.AllLevels)
-	}
-	log.SetLevel(lvl)
-}
+// Run "go generate" to format example terraform files and generate the docs for the registry/website
+
+// If you do not have terraform installed, you can remove the formatting command, but its suggested to
+// ensure the documentation is formatted properly.
+//go:generate terraform fmt -recursive ./examples/
+
+// Run the docs generation tool, check its repository for more information on how it works and how docs
+// can be customized.
+//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+
+var (
+	// these will be set by the goreleaser configuration
+	// to appropriate values for the compiled binary
+	version string = "dev"
+
+	// goreleaser can also pass the specific commit if you want
+	// commit  string = ""
+)
 
 func main() {
-	cmd.Execute()
+	var debugMode bool
+
+	flag.BoolVar(&debugMode, "debug", false, "set to true to run the provider with support for debuggers like delve")
+	flag.Parse()
+
+	opts := &plugin.ServeOpts{
+		Debug: debugMode,
+
+		ProviderAddr: "registry.terraform.io/think-it/dirhash",
+
+		ProviderFunc: provider.New(version),
+	}
+
+	plugin.Serve(opts)
 }
