@@ -3,7 +3,7 @@ Print the hash of a folder. You may ignore some files using flags.
 
 Usage:
 
-	go-dirhash hash [flags]
+	dirhash sha256 [flags]
 
 Flags:
 
@@ -15,7 +15,7 @@ package main
 import (
 	"os"
 
-	"github.com/Think-iT-Labs/go-dirhash/cmd"
+	"github.com/Think-iT-Labs/dirhash/cmd"
 	log "github.com/sirupsen/logrus"
 )
 

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Think-iT-Labs/go-dirhash/lib"
+	"github.com/Think-iT-Labs/dirhash/lib"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -16,9 +16,9 @@ func init() {
 }
 
 var hashCmd = &cobra.Command{
-	Use:   "hash",
-	Short: "Print the hash of a folder.",
-	Long:  `Print the hash of a folder. You may ignore some files using flags.`,
+	Use:   "sha256",
+	Short: "Print the sha256 hash of a directory.",
+	Long:  `Print the sha256 hash of a directory. You may ignore some files using ignore flag.`,
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		var directory = args[0]
@@ -26,4 +26,5 @@ var hashCmd = &cobra.Command{
 		log.Debug("ignore: ", ignoredPaths)
 		fmt.Println(lib.DirHash(directory, ignoredPaths))
 	},
+	Example: "dirhash sha256 --ignore=node_modules/** ~/my_node_project",
 }
