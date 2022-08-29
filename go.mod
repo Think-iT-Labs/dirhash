@@ -1,4 +1,4 @@
-module github.com/Think-iT-Labs/go-dirhash
+module github.com/Think-iT-Labs/dirhash
 
 go 1.18
 
