@@ -28,7 +28,8 @@ func init() {
 	}
 	lvl, err := log.ParseLevel(logLevel)
 	if err != nil {
-		log.Error("LOG_LEVEL environment variable should be one of:", log.AllLevels)
+		log.Warn("Invalid LOG_LEVEL, defaulting to info. Valid levels:", log.AllLevels)
+		lvl = log.InfoLevel
 	}
 	log.SetLevel(lvl)
 }

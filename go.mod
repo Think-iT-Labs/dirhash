@@ -1,6 +1,7 @@
 module github.com/Think-iT-Labs/dirhash
 
-go 1.18
+go 1.25
+toolchain go1.25.1
 
 require (
 	github.com/bmatcuk/doublestar v1.3.4
